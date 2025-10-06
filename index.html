@@ -14,7 +14,7 @@
 <body class="bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 text-white relative">
 
 
- <header class="absolute inset-x-0 top-0 z-50">
+  <header class="absolute inset-x-0 top-0 z-50">
 
     <div class="text-center py-4">
       <h1 class="text-2xl md:text-4xl font-bold text-white drop-shadow-md">Toko Syahrul 🛒🥚🍜 </h1>
@@ -23,9 +23,12 @@
 
     <nav class="hidden lg:block">
       <div class="flex justify-center space-x-8 pb-4">
-        <a href="index.html" class="text-2xl text-white font-medium hover:text-blue-600 transition duration-200">🏠 Home</a>
-        <a href="menu.html" class="text-2xl text-white font-medium hover:text-blue-600 transition duration-200">📋 Menu</a>
-        <a href="pesan.html" class="text-2xl text-white font-medium hover:text-blue-600 transition duration-200">🛒 Pesan</a>
+        <a href="index.html" class="text-2xl text-white font-medium hover:text-blue-600 transition duration-200">🏠
+          Home</a>
+        <a href="menu.html" class="text-2xl text-white font-medium hover:text-blue-600 transition duration-200">📋
+          Menu</a>
+        <a href="pesan.html" class="text-2xl text-white font-medium hover:text-blue-600 transition duration-200">🛒
+          Pesan</a>
       </div>
     </nav>
 
@@ -74,8 +77,8 @@
           class="flex flex-col md:flex-row items-center gap-8 bg-blue-800/30 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
 
           <div class="md:w-1/2">
-            <h2 class="text-4xl font-bold text-white mb-3">Tentang Warung Kami</h2>
-            <p class="text-2xl blue-50 leading-relaxed">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-3">Tentang Warung Kami</h2>
+            <p class="text-1xl md:text-2xl blue-50 leading-relaxed ">
               🛒 Toko Syahrul<br>
               📍 Jl. Kacong Dg Lalang No.112, Gowa<br>
               ✅ Sembako lengkap<br>
@@ -108,8 +111,8 @@
           <div
             class="flex flex-col md:flex-row-reverse items-center gap-8 bg-blue-800/30 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
             <div class="md:w-1/2">
-              <h2 class="text-4xl font-bold text-white mb-3">Ibu Halijah – Pemilik Warung</h2>
-              <p class="text-2xl blue-50 leading-relaxed ">
+              <h2 class="text-3xl md:text-4xl font-bold text-white mb-3">Ibu Halijah – Pemilik Warung</h2>
+              <p class="text-1xl md:text-2xl blue-50 leading-relaxed ">
                 Sejak tahun 2018 hingga sekarang, <strong>Ibu Halijah</strong> dengan setia melayani warga sekitar
                 dengan senyum dan keramahan. Kepuasan pelanggan selalu menjadi prioritas utama, dengan memastikan setiap
                 barang yang dijual segar, berkualitas, dan harga tetap bersahabat.
@@ -127,8 +130,8 @@
           <div
             class="flex flex-col md:flex-row items-center gap-8 bg-blue-800/30 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
             <div class="md:w-1/2">
-              <h2 class="text-4xl font-bold text-white mb-3">Produk</h2>
-              <p class="text-2xl blue-50 leading-relaxed">
+              <h2 class="text-3xl md:text-4xl font-bold text-white mb-3">Produk</h2>
+              <p class="text-1xl md:text-2xl blue-50 leading-relaxed">
                 Kami menjual berbagai kebutuhan harian seperti telur, mie instan, beras, gula, garam, susu UHT, minuman
                 dingin, rokok, kopi, minyak goreng, sabun, detergen, camilan favorit, serta aneka bumbu dapur dan
                 kebutuhan rumah tangga lainnya.
@@ -156,74 +159,99 @@
       &copy; 2018 Toko Syahrul. Buka setiap hari, 06.00 – 23.00 WITA.
     </footer>
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
-      const toggleBtn = document.getElementById("menu-toggle");
-      const mobileMenu = document.getElementById("mobile-menu");
+      $(document).ready(function () {
+        const $menu = $("#mobile-menu");
+        const $toggle = $("#menu-toggle");
+        const $bars = $toggle.find("span");
+        let isAnimating = false;
+        let fallbackTimer = null;
 
-      toggleBtn.addEventListener("click", () => {
-        mobileMenu.classList.toggle("hidden");
-      });
+        $menu.css({
+          overflow: "hidden",
+          "max-height": "0px",
+          opacity: 0,
+          transition: "max-height 0.35s ease, opacity 0.35s ease"
+        });
 
+        function clearFallback() {
+          if (fallbackTimer) {
+            clearTimeout(fallbackTimer);
+            fallbackTimer = null;
+          }
+        }
 
-      document.querySelectorAll("#mobile-menu a").forEach(link => {
-        link.addEventListener("click", () => {
-          mobileMenu.classList.add("hidden");
+        function openMenu() {
+          const el = $menu.get(0);
+          $menu.removeClass("hidden").addClass("open").css("display", "block");
+          void el.offsetHeight; // reflow
+          const targetHeight = el.scrollHeight + "px";
+          $menu.css({ "max-height": targetHeight, opacity: 1 });
+
+          // animasi hamburger jadi X
+          $bars.eq(0).css({ transform: "rotate(45deg) translateY(10px)" });
+          $bars.eq(1).css({ opacity: 0 });
+          $bars.eq(2).css({ transform: "rotate(-45deg) translateY(-10px)" });
+
+          fallbackTimer = setTimeout(() => {
+            $menu.css("max-height", "");
+            isAnimating = false;
+          }, 600);
+
+          el.addEventListener("transitionend", function onEnd(e) {
+            if (e.propertyName === "max-height") {
+              clearFallback();
+              $menu.css("max-height", "");
+              el.removeEventListener("transitionend", onEnd);
+              isAnimating = false;
+            }
+          });
+        }
+
+        function closeMenu() {
+          const el = $menu.get(0);
+          $menu.css("max-height", el.scrollHeight + "px");
+          void el.offsetHeight;
+          $menu.css({ "max-height": "0px", opacity: 0 });
+
+          // animasi X balik ke tiga garis
+          $bars.eq(0).css({ transform: "rotate(0) translateY(0)" });
+          $bars.eq(1).css({ opacity: 1 });
+          $bars.eq(2).css({ transform: "rotate(0) translateY(0)" });
+
+          fallbackTimer = setTimeout(() => {
+            $menu.addClass("hidden").removeClass("open").css({ display: "", "max-height": "" });
+            isAnimating = false;
+          }, 600);
+
+          el.addEventListener("transitionend", function onEnd(e) {
+            if (e.propertyName === "max-height") {
+              clearFallback();
+              $menu.addClass("hidden").removeClass("open").css({ display: "", "max-height": "" });
+              el.removeEventListener("transitionend", onEnd);
+              isAnimating = false;
+            }
+          });
+        }
+
+        $toggle.on("click", function (e) {
+          e.preventDefault();
+          if (isAnimating) return;
+          isAnimating = true;
+          if ($menu.hasClass("open")) closeMenu();
+          else openMenu();
+        });
+
+        $menu.on("click", "a", function () {
+          if ($menu.hasClass("open") && !isAnimating) {
+            isAnimating = true;
+            closeMenu();
+          }
         });
       });
-
-      $(document).ready(function () {
-  let isAnimating = false;
-
-  $("#menu-toggle").click(function () {
-    if (isAnimating) return;
-    isAnimating = true;
-
-    const $menu = $("#mobile-menu");
-    const isOpen = $menu.hasClass("open");
-
-    if (isOpen) {
-
-      $menu.animate(
-        { height: 0, opacity: 0 },
-        300,
-        function () {
-          $(this).removeClass("open").css({ height: "", opacity: "" });
-          isAnimating = false;
-        }
-      );
-    } else {
-
-      const targetHeight = $menu.get(0).scrollHeight;
-      $menu
-        .css({ height: 0, opacity: 0 })
-        .animate(
-          { height: targetHeight, opacity: 1 },
-          300,
-          function () {
-            $(this).addClass("open").css("height", "");
-            isAnimating = false;
-          }
-        );
-    }
-  });
-
-  
-  $("#mobile-menu a").click(function () {
-    if ($("#mobile-menu").hasClass("open") && !isAnimating) {
-      isAnimating = true;
-      $("#mobile-menu").animate(
-        { height: 0, opacity: 0 },
-        300,
-        function () {
-          $(this).removeClass("open").css({ height: "", opacity: "" });
-          isAnimating = false;
-        }
-      );
-    }
-  });
-});
     </script>
+
 
 </body>
 
