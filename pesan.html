@@ -24,8 +24,7 @@
           Home</a>
         <a href="menu.html" class="text-2xl text-white font-medium hover:text-blue-600 transition duration-200">📋
           Menu</a>
-        <a href="pesan.html"
-          class="text-2xl text-blue-600 font-medium transition duration-200 border-b-2 border-blue-600">🛒
+        <a href="pesan.html" class="text-2xl text-white font-medium hover:text-blue-600 transition duration-200">🛒
           Pesan</a>
       </div>
     </nav>
@@ -45,8 +44,7 @@
     <div id="mobile-menu" class="hidden lg:hidden bg-blue-900/90 backdrop-blur-md p-6 space-y-4 text-center">
       <a href="index.html" class="block text-2xl text-white font-medium hover:text-blue-600 transition">🏠 Home</a>
       <a href="menu.html" class="block text-2xl text-white font-medium hover:text-blue-600 transition">📋 Menu</a>
-      <a href="pesan.html"
-        class="block text-2xl text-blue-600 font-medium hover:text-blue-600 transition border-b-2 border-blue-600">🛒
+      <a href="pesan.html" class="block text-2xl text-white font-medium hover:text-blue-600 transition">🛒
         Pesan</a>
     </div>
   </header>
@@ -2271,23 +2269,9 @@
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script>
-    const toggleBtn = document.getElementById("menu-toggle");
-    const mobileMenu = document.getElementById("mobile-menu");
-
-    toggleBtn.addEventListener("click", () => {
-      mobileMenu.classList.toggle("hidden");
-    });
-
-    document.querySelectorAll("#mobile-menu a").forEach(link => {
-      link.addEventListener("click", () => {
-        mobileMenu.classList.add("hidden");
-      });
-    });
-
-    // Perubahan di sini untuk menyesuaikan dengan struktur HTML baru
     document.querySelectorAll('.increase').forEach(button => {
       button.addEventListener('click', function () {
-        // Menggunakan closest untuk menemukan elemen parent terdekat dengan class .menu-item
+
         const qty = this.closest('.menu-item').querySelector('.quantity');
         qty.textContent = parseInt(qty.textContent) + 1;
         updateOrderSummary();
@@ -2296,7 +2280,7 @@
 
     document.querySelectorAll('.decrease').forEach(button => {
       button.addEventListener('click', function () {
-        // Menggunakan closest untuk menemukan elemen parent terdekat dengan class .menu-item
+
         const qty = this.closest('.menu-item').querySelector('.quantity');
         let current = parseInt(qty.textContent);
         if (current > 0) {
@@ -2305,7 +2289,7 @@
         }
       });
     });
-    // Akhir Perubahan
+
 
     function updateOrderSummary() {
       const orderSummary = document.getElementById('order-summary');
@@ -2316,7 +2300,7 @@
       document.querySelectorAll('.menu-item').forEach(item => {
         const name = item.querySelector('h5').textContent;
         const priceText = item.querySelector('.text-base.font-bold').textContent;
-        // Menangani harga yang menggunakan format "/Butir" (contoh: Telur Ayam)
+
         const priceMatch = priceText.match(/Rp\s*([\d\.]+)/);
         const price = priceMatch ? parseInt(priceMatch[1].replace(/\./g, '')) : 0;
         const qty = parseInt(item.querySelector('.quantity').textContent);
@@ -2426,15 +2410,13 @@ Terima kasih 🙏`;
     });
 
 
-    /* ===================================
-        MENU HAMBURGER SMOOTH + SLIDE DOWN
-        =================================== */
+
     $(document).ready(function () {
       const $menu = $("#mobile-menu");
       let isAnimating = false;
       let fallbackTimer = null;
 
-      // CSS dasar animasi
+
       $menu.css({
         overflow: "hidden",
         "max-height": "0px",
@@ -2453,7 +2435,7 @@ Terima kasih 🙏`;
       function openMenu() {
         const el = $menu.get(0);
         $menu.removeClass("hidden").addClass("open").css("display", "block");
-        void el.offsetHeight; 
+        void el.offsetHeight;
         const targetHeight = el.scrollHeight + "px";
         $menu.css({
           "max-height": targetHeight,

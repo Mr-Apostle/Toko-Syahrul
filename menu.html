@@ -1363,11 +1363,11 @@
       function openMenu() {
         const el = $menu.get(0);
         $menu.removeClass("hidden").addClass("open").css("display", "block");
-        void el.offsetHeight; // reflow
+        void el.offsetHeight;
         const targetHeight = el.scrollHeight + "px";
         $menu.css({ "max-height": targetHeight, opacity: 1 });
 
-        // animasi hamburger jadi X
+
         $bars.eq(0).css({ transform: "rotate(45deg) translateY(10px)" });
         $bars.eq(1).css({ opacity: 0 });
         $bars.eq(2).css({ transform: "rotate(-45deg) translateY(-10px)" });
@@ -1393,7 +1393,6 @@
         void el.offsetHeight;
         $menu.css({ "max-height": "0px", opacity: 0 });
 
-        // animasi X balik ke tiga garis
         $bars.eq(0).css({ transform: "rotate(0) translateY(0)" });
         $bars.eq(1).css({ opacity: 1 });
         $bars.eq(2).css({ transform: "rotate(0) translateY(0)" });
@@ -1429,16 +1428,7 @@
       });
     });
 
-    const toggleBtn = document.getElementById("menu-toggle");
-    const mobileMenu = document.getElementById("mobile-menu");
-    toggleBtn.addEventListener("click", () => {
-      mobileMenu.classList.toggle("hidden");
-    });
-    document.querySelectorAll("#mobile-menu a").forEach(link => {
-      link.addEventListener("click", () => {
-        mobileMenu.classList.add("hidden");
-      });
-    });
+
     function filterCategory(category) {
       const items = document.querySelectorAll("#produk-grid > div");
       items.forEach(item => {
